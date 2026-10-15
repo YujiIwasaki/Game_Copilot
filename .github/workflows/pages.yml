@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "Game/**"
+      - "Game/Github/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -30,7 +30,7 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Game
+          path: Game/Github
 
       - name: Deploy to GitHub Pages
         id: deployment
