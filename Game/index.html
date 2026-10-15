@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101a2b">
+    <meta name="description" content="大・中・小の駒を重ねて勝利をつかむ、先読み対戦型の三目ゲーム。">
+    <title>重ねて三目 | 盤上の読み合いゲーム</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="重ねて三目 ホーム">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>重ねて三目</span>
+        </a>
+        <span class="topbar-note">THINK AHEAD. STACK TO WIN.</span>
+      </header>
+
+      <section class="intro" aria-labelledby="page-title">
+        <div class="intro-copy">
+          <p class="eyebrow">THE STRATEGY OF STACKING</p>
+          <h1 id="page-title">重ねて、<span>ひっくり返す。</span></h1>
+          <p class="intro-text">三目並べに、駒の大きさという新しい読み合いを。</p>
+        </div>
+        <div class="round-stamp" aria-label="3マスかける3マス">
+          <span>3 × 3</span>
+          <small>BOARD</small>
+        </div>
+      </section>
+
+      <section class="setup-card panel" aria-labelledby="setup-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SET UP YOUR MATCH</p>
+            <h2 id="setup-title">対戦をセットアップ</h2>
+          </div>
+          <span class="setup-step">01 <span>/ 02</span></span>
+        </div>
+        <div class="setup-controls">
+          <label class="player-select player-select-x">
+            <span class="player-select-title"><span class="mini-mark">×</span> 先攻 <small>PLAYER 1</small></span>
+            <select id="player1-type" aria-label="先攻の操作方法">
+              <option value="human">プレイヤー</option>
+              <option value="computer">コンピューター</option>
+            </select>
+          </label>
+          <span class="versus" aria-hidden="true">VS</span>
+          <label class="player-select player-select-o">
+            <span class="player-select-title"><span class="mini-mark">○</span> 後攻 <small>PLAYER 2</small></span>
+            <select id="player2-type" aria-label="後攻の操作方法">
+              <option value="human">プレイヤー</option>
+              <option value="computer">コンピューター</option>
+            </select>
+          </label>
+          <button id="start-button" class="button button-primary" type="button">
+            対戦をはじめる <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="game-layout" aria-label="ゲーム">
+        <div class="game-main panel">
+          <div class="game-heading">
+            <div>
+              <p class="eyebrow">YOUR MOVE, YOUR MOMENT</p>
+              <h2>ゲームボード</h2>
+            </div>
+            <button id="restart-button" class="button button-quiet" type="button" disabled>
+              <span aria-hidden="true">↻</span> はじめから
+            </button>
+          </div>
+          <div id="game-status" class="game-status" role="status" aria-live="polite">
+            <span class="status-dot"></span>
+            <span id="status-text">プレイヤーを選んで、対戦をはじめましょう。</span>
+          </div>
+          <div id="board" class="board" role="grid" aria-label="三目ゲームの盤面">
+            <button class="cell" type="button" role="gridcell" data-cell="0" aria-label="1行1列、空き"></button>
+            <button class="cell" type="button" role="gridcell" data-cell="1" aria-label="1行2列、空き"></button>
+            <button class="cell" type="button" role="gridcell" data-cell="2" aria-label="1行3列、空き"></button>
+            <button class="cell" type="button" role="gridcell" data-cell="3" aria-label="2行1列、空き"></button>
+            <button class="cell" type="button" role="gridcell" data-cell="4" aria-label="2行2列、空き"></button>
+            <button class="cell" type="button" role="gridcell" data-cell="5" aria-label="2行3列、空き"></button>
+            <button class="cell" type="button" role="gridcell" data-cell="6" aria-label="3行1列、空き"></button>
+            <button class="cell" type="button" role="gridcell" data-cell="7" aria-label="3行2列、空き"></button>
+            <button class="cell" type="button" role="gridcell" data-cell="8" aria-label="3行3列、空き"></button>
+          </div>
+          <p class="board-hint" id="board-hint">まず下の駒を選び、置きたいマスをタップ。</p>
+        </div>
+
+        <aside class="game-sidebar">
+          <section class="player-card panel" id="player-card-0" aria-labelledby="player-one-title">
+            <div class="player-card-heading">
+              <div class="player-identity">
+                <span class="player-symbol symbol-x">×</span>
+                <div><h3 id="player-one-title">先攻</h3><span class="player-kind" id="player-one-kind">未設定</span></div>
+              </div>
+              <span class="turn-indicator" id="turn-indicator-0">TURN</span>
+            </div>
+            <p class="piece-label">のこりの駒 <span>各サイズ 2個</span></p>
+            <div class="piece-tray" id="piece-tray-0" aria-label="先攻の駒"></div>
+          </section>
+
+          <section class="player-card panel" id="player-card-1" aria-labelledby="player-two-title">
+            <div class="player-card-heading">
+              <div class="player-identity">
+                <span class="player-symbol symbol-o">○</span>
+                <div><h3 id="player-two-title">後攻</h3><span class="player-kind" id="player-two-kind">未設定</span></div>
+              </div>
+              <span class="turn-indicator" id="turn-indicator-1">TURN</span>
+            </div>
+            <p class="piece-label">のこりの駒 <span>各サイズ 2個</span></p>
+            <div class="piece-tray" id="piece-tray-1" aria-label="後攻の駒"></div>
+          </section>
+
+          <section class="rules-card panel" aria-labelledby="rules-title">
+            <div class="rules-heading">
+              <span class="rules-icon" aria-hidden="true">✳</span>
+              <h3 id="rules-title">勝利へのヒント</h3>
+            </div>
+            <ul class="rules-list">
+              <li><span class="rule-number">01</span><span>縦・横・斜めに、自分の駒を3つ並べよう。</span></li>
+              <li><span class="rule-number">02</span><span>より大きな駒なら、相手の駒の上にも置ける。</span></li>
+              <li><span class="rule-number">03</span><span>大・中・小は各2個。使いどころが勝負の鍵。</span></li>
+            </ul>
+            <p class="rules-footnote">9マスがすべて埋まると引き分けです。</p>
+          </section>
+        </aside>
+      </section>
+
+      <footer class="footer">
+        <span>重ねるたびに、盤面が変わる。</span>
+        <span class="footer-dot">✳</span>
+        <span>THINK BIGGER</span>
+      </footer>
+    </main>
+  </body>
+</html>
